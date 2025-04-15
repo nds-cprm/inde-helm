@@ -2,6 +2,34 @@ apiVersion: v1
 entries:
   inde:
   - apiVersion: v2
+    created: "2025-04-15T12:44:53.098656123Z"
+    dependencies:
+    - name: nginx
+      repository: https://nds-cprm.github.io/helm-charts/
+      version: 0.3.0
+    - name: geonetwork
+      repository: https://nds-cprm.github.io/helm-charts/
+      version: 0.2.4
+    - condition: geoserver.enabled
+      name: geoserver
+      repository: https://nds-cprm.github.io/helm-charts/
+      version: 0.5.4
+    description: A Helm chart for Kubernetes
+    digest: eb9a93e37061b8d90ecdb258b3f900feb421861d97392720f27bf47daec15f81
+    icon: https://inde.gov.br/img/INDE%20Logo.png
+    keywords:
+    - INDE
+    - geoserver
+    - geonetwork
+    maintainers:
+    - email: carlos.mota@sgb.gov.br
+      name: Carlos Eduardo Mota
+    name: inde
+    type: application
+    urls:
+    - https://github.com/nds-cprm/inde-helm/releases/download/inde-0.3.0/inde-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
     created: "2024-11-08T20:38:55.920092923Z"
     dependencies:
     - condition: geoserver.enabled
@@ -79,4 +107,4 @@ entries:
     urls:
     - https://github.com/nds-cprm/inde-helm/releases/download/inde-0.1.0/inde-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-08T20:38:55.920105847Z"
+generated: "2025-04-15T12:44:53.09867563Z"
