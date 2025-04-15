@@ -1,0 +1,117 @@
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+nginx:
+  service:
+    type: ClusterIP
+    port: 8080
+
+  ingress:
+    enabled: true
+    hosts:
+      - host: inde.apps-crc.testing
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+  overrides:
+    default:
+      type: configMap
+      name: geoservicos-inde-nginx-config # {{ include "inde.fullname" . }}-nginx-config
+      enabled: true
+    html:
+      type: configMap
+      name: geoservicos-inde-nginx-html # {{ include "inde.fullname" . }}-nginx-html
+      enabled: true
+
+geonetwork:
+  image:
+    tag: 3.10.2-inde
+    # pullPolicy: Always
+  serviceAccount:
+    create: false
+  pvc:
+    data:
+      enabled: true
+      keep: false
+      # volumeName: 
+      storage: 
+        className: crc-csi-hostpath-provisioner
+        size: 5Gi
+        accessModes:
+          - ReadWriteOnce
+    index:
+      enabled: true
+      keep: false
+      # volumeName: 
+      storage: 
+        className: crc-csi-hostpath-provisioner
+        size: 5Gi
+        accessModes:
+          - ReadWriteOnce
+
+geoserver:
+  enabled: true
+  serviceAccount:
+    create: false
+  image:
+    tag: 2.24.4-java17
+  config:
+    console:
+      disabled: false
+    cors:
+      allowedOrigins:
+        - 'https://geoservicos.sgb.gov.br'
+        - 'https://geosgb.sgb.gov.br'
+        - 'https://geoportal.sgb.gov.br'
+        - 'http://inde.apps-crc.testing'
+    csrf:
+      disabled: false
+      whitelist:
+        - inde.apps-crc.testing
+    jvm:
+      CATALINA_OPTS: >-
+        -XX:PerfDataSamplingInterval=500 
+        -XX:SoftRefLRUPolicyMSPerMB=36000 
+        -XX:NewRatio=2 
+        -XX:+UseG1GC 
+        -XX:+UseStringDeduplication 
+        -XX:InitiatingHeapOccupancyPercent=70 
+      GEOSERVER_OPTS: >-
+        -Dorg.geotools.referencing.forceXY=true 
+        -Dorg.geotools.shapefile.datetime=true 
+        -Dgeoserver.login.autocomplete=off 
+        -Doracle.jdbc.timezoneAsRegion=false
+      JAVA_OPTS: >-
+        -server 
+        -Djava.awt.headless=true 
+        -Xms4G 
+        -Xmx6G
+    proxyBaseURL: 'http://inde.apps-crc.testing/geoserver'
+  pvc:
+    data:
+      enabled: true
+      keep: false
+      # volumeName: 
+      storage: 
+        className: crc-csi-hostpath-provisioner
+        size: 5Gi
+        accessModes:
+          - ReadWriteOnce
+    gwc:
+      enabled: true
+      keep: false
+      # volumeName: 
+      storage: 
+        className: crc-csi-hostpath-provisioner
+        size: 5Gi
+        accessModes:
+          - ReadWriteOnce
