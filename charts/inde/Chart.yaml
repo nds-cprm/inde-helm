@@ -12,10 +12,10 @@ dependencies:
     version: "0.3.0"
     repository: "https://nds-cprm.github.io/helm-charts/"
   - name: geonetwork
-    version: "0.2.4"
+    version: "0.2.5"
     repository: "https://nds-cprm.github.io/helm-charts/"
   - name: geoserver
-    version: "0.5.4"
+    version: "0.5.6"
     repository: "https://nds-cprm.github.io/helm-charts/"
     condition: geoserver.enabled
 maintainers:
